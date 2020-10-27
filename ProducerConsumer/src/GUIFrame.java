@@ -4,6 +4,11 @@
  * and open the template in the editor.
  */
 
+import producerconsumer.ProducerConsumer;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  *
  * @author sdegante
@@ -15,6 +20,24 @@ public class GUIFrame extends javax.swing.JFrame {
      */
     public GUIFrame() {
         initComponents();
+        jButton1.addActionListener(e -> initializeConsumer());
+    }
+
+    public void initializeConsumer() {
+        // TODO: Buffer size must be between 1 or 100
+        int bufferSize;
+        String sizeString = jTextField3.getText();
+        if (sizeString != null) {
+            try {
+                bufferSize = Integer.parseInt(sizeString);
+            } catch (NumberFormatException e) {
+                bufferSize = 1;
+            }
+        } else {
+            bufferSize = 1;
+        }
+        System.out.println(String.format("Buffer size: %d", bufferSize));
+        ProducerConsumer.run(bufferSize);
     }
 
     /**

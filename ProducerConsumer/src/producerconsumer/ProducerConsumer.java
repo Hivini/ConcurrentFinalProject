@@ -3,9 +3,9 @@ package producerconsumer;
 
 public class ProducerConsumer {
 
-    public static void main(String[] args) {
+    public static void run(int bufferSize) {
         
-        Buffer buffer = new Buffer();
+        Buffer buffer = new Buffer(bufferSize);
         
         Producer producer = new Producer(buffer);
         producer.start();

@@ -1,43 +1,46 @@
 
 package producerconsumer;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Buffer {
     
-    private char buffer;
+    private final Queue<Character> buffer;
+    private int maxSize;
     
-    Buffer() {
-        this.buffer = 0;
+    Buffer(int bufferSize) {
+        buffer = new PriorityQueue<>(bufferSize);
+        maxSize = bufferSize;
     }
     
     synchronized char consume() {
         char product = 0;
         
-        if(this.buffer == 0) {
+        if(this.buffer.isEmpty()) {
             try {
                 wait(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        product = this.buffer;
-        this.buffer = 0;
+        product = this.buffer.remove();
         notify();
         
         return product;
     }
     
     synchronized void produce(char product) {
-        if(this.buffer != 0) {
+        if(this.buffer.size() >= maxSize) {
             try {
                 wait(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        this.buffer = product;
+        this.buffer.add(product);
         
         notify();
     }
