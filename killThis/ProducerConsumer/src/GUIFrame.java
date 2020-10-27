@@ -6,9 +6,6 @@
 
 import producerconsumer.ProducerConsumer;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /**
  *
  * @author sdegante
