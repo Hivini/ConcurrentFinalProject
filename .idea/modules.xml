@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/killThis/.idea/ConcurrentFinalProject.iml" filepath="$PROJECT_DIR$/killThis/.idea/ConcurrentFinalProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/killThis/ProducerConsumer/ProducerConsumer.iml" filepath="$PROJECT_DIR$/killThis/ProducerConsumer/ProducerConsumer.iml" />
+    </modules>
+  </component>
+</project>
