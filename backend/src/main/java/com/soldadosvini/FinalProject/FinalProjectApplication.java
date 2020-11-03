@@ -17,18 +17,18 @@ public class FinalProjectApplication {
 
 	public static void main(String[] args) {
 		Buffer buffer = new Buffer(10);
-        
-        Producer producer = new Producer(buffer);
-        producer.start();
-        
-        Consumer consumer = new Consumer(buffer);
+
+		Producer producer = new Producer(buffer);
+		producer.start();
+		Consumer consumer = new Consumer(buffer);
 		consumer.start();
-		
+
 		String task = Utils.generateTask();
+
 		logger.info(String.format("Example task: %s", task));
 		logger.info(String.format("Example result: %s", Utils.resolveTask(task)));
-	
+
 		// SpringApplication.run(FinalProjectApplication.class, args);
 	}
-	
+
 }
