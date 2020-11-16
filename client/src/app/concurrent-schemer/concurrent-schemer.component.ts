@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SocketService } from '../services/socket.service';
 
 @Component({
   selector: 'app-concurrent-schemer',
@@ -16,10 +17,20 @@ export class ConcurrentSchemerComponent implements OnInit {
     { label: 'Division', value: 'div', checked: true },
     { label: 'Substraction', value: 'sub', checked: true },
   ];
-  constructor() { }
+
+  constructor(
+    private socketService : SocketService
+  ) { }
 
 
   ngOnInit(): void {
+    this.socketService.connect();
+    this.socketService.messagesSubject.subscribe((event)=>{
+      console.log("Event from subject",JSON.parse(event.body))
+    })
   }
 
+  start(){
+    this.socketService.send("Hello!")
+  }
 }
