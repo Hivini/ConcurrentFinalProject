@@ -1,0 +1,61 @@
+<div class="container">
+  <h1 class="title">Concurrent Schemer</h1>
+  <nz-row nzJustify="space-around">
+    <nz-col class="card" nzXs="23" nzLg="11">
+      <h2 class="subtitle">Producer</h2>
+      <nz-row>
+        <nz-col nzSpan="24">
+          <p>Number of producers</p>
+        </nz-col>
+        <nz-col nzSpan="20">
+          <nz-slider [nzMin]="1" [nzMax]="10" [(ngModel)]="prodNum"></nz-slider>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-input-number [nzMin]="1" [nzMax]="10"  [(ngModel)]="prodNum" class="left-input"></nz-input-number>
+        </nz-col>
+        <nz-col nzSpan="24">
+          <p>Number of consumers</p>
+        </nz-col>
+        <nz-col nzSpan="20">
+          <nz-slider [nzMin]="1" [nzMax]="10" [(ngModel)]="consNum"></nz-slider>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-input-number [nzMin]="1" [nzMax]="10"  [(ngModel)]="consNum" class="left-input"></nz-input-number>
+        </nz-col>
+        <nz-col nzSpan="24">
+          <p>Wait time</p>
+        </nz-col>
+        <nz-col nzSpan="20">
+          <nz-slider [nzMin]="1" [nzMax]="10000" [(ngModel)]="waitTime"></nz-slider>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-input-number [nzMin]="1" [nzMax]="10000" [(ngModel)]="waitTime" class="left-input"></nz-input-number>
+        </nz-col>
+        <nz-col nzSpan="24">
+          <p>Value range</p>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-input-number [nzMin]="1" [nzMax]="10000"  [(ngModel)]="valueRange[0]" [nzDisabled]=true></nz-input-number>
+        </nz-col>
+        <nz-col nzSpan="16">
+          <nz-slider nzRange [nzMin]="0" [nzMax]="9" [(ngModel)]="valueRange"></nz-slider>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-input-number [nzMin]="1" [nzMax]="10000"  [(ngModel)]="valueRange[1]" [nzDisabled]=true class="left-input"></nz-input-number>
+        </nz-col>
+        <nz-col nzSpan="24" style="margin-top: 16px;">
+          <p>Operators</p>
+        </nz-col>
+        <nz-col nzSpan="24">
+          <nz-checkbox-group [(ngModel)]="operators"></nz-checkbox-group>
+        </nz-col>
+        <nz-col nzSpan="24">
+          <button nz-button nzType="primary" class="start-button" (click)="start()">Start</button>
+        </nz-col>
+      </nz-row>
+    </nz-col>
+    <nz-col class="card"  nzXs="23" nzLg="11">
+      <h2 class="subtitle">Consumer</h2>
+    </nz-col>
+  </nz-row>
+</div>
