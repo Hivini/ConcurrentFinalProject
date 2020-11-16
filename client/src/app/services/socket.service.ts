@@ -1,21 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import { AppComponent } from '../app.component';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SocketioService {
+export class SocketService {
   stompClient: any;
   topic: string = '/topic/greetings';
-  appComponent: AppComponent;
-
-  constructor(appComponent: AppComponent) {
-    this.appComponent = appComponent;
-  }
+  public messagesSubject : Subject<any> =  new Subject()
 
   public connect(){
     console.log('%c Initializing socket connection.','color: #22a322');
@@ -24,7 +19,7 @@ export class SocketioService {
     const _this = this;
     _this.stompClient.connect({}, (frame)=>{
       _this.stompClient.subscribe(_this.topic, (event)=>{
-        _this.onMessageRecieved(event);
+        this.messagesSubject.next(event);
       })
     }, _this.errorCallback)
   }
@@ -43,8 +38,9 @@ export class SocketioService {
     }, 5000);
   }
 
-  onMessageRecieved(message) {
-    console.log("Message Recieved from Server :: " + message);
-    this.appComponent.handleMessage(JSON.stringify(message.body));
+  public send(message){
+    console.log("calling logout api via web socket");
+    this.stompClient.send("/app/hello", {}, JSON.stringify(message));
   }
+
 }
