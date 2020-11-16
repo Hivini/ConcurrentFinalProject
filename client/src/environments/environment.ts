@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  WEB_SOCKET_ENDPOINT: 'http://localhost:8080/'
+  WEB_SOCKET_ENDPOINT: 'http://localhost:8080/hello'
 };
 
 /*
