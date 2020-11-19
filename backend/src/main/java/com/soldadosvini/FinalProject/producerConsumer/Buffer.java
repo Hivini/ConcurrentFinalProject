@@ -8,16 +8,19 @@ import java.util.logging.Logger;
 
 public class Buffer {
     
-    private final Queue<Character> buffer;
+    static private int finishedProcess = 0;
+    private final Queue<String> buffer;
     private int maxSize;
     
+    // Constructor parametrizado: size
+
     public Buffer(int bufferSize) {
         buffer = new PriorityQueue<>(bufferSize);
         maxSize = bufferSize;
     }
     
-    synchronized char consume() {
-        char product = 0;
+    synchronized String consume() {
+        String product;
         
         if(this.buffer.isEmpty()) {
             try {
@@ -26,13 +29,14 @@ public class Buffer {
                 Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
         product = this.buffer.remove();
         notify();
         
         return product;
     }
     
-    synchronized void produce(char product) {
+    synchronized void produce(String product) {
         if(this.buffer.size() >= maxSize) {
             try {
                 wait();
@@ -45,9 +49,24 @@ public class Buffer {
         notify();
     }
     
-    static int count = 1;
-    synchronized static void print(String string) {
-        System.out.print(count++ + " ");
+
+    synchronized static void processFinished(String string) {
+        finishedProcess++;
+        System.out.print(finishedProcess + " ");
         System.out.println(string);
+    }
+
+
+    public int currentStatus() {
+        return 0;
+    }
+
+
+    public boolean isEmpty() {
+        return this.buffer.isEmpty();
+    }
+
+    public boolean threIsSpace() {
+        return finishedProcess < this.maxSize;
     }
 }

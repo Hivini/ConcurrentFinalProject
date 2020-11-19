@@ -47,15 +47,15 @@ public class Utils {
      * 
      * @return The Scheme operation as a String.
      */
-    public static String generateTask() {
+    public static String generateTask(int min, int max, Character operator) {
         Random random = new Random();
 
-        double val1 = random.nextDouble() * MAX_RANDOM;
-        double val2 = random.nextDouble() * MAX_RANDOM;
+        int val1  = random.ints(min, max + 1).findFirst().getAsInt();
+        int val2  = random.ints(min, max + 1).findFirst().getAsInt();
 
-        // Set a value of the operation as an int between 0 and 3.
-        String operator = getOperator(random.nextInt(4));
-        return String.format("( %s %.2f %.2f )", operator, val1, val2);
+        // Set a value of the operation as an int between min and max.
+        //String operator = getOperator(random.nextInt(4));
+        return String.format("( %s %d %d )", operator, val1, val2);
     }
 
     private static String getOperator(int val) {

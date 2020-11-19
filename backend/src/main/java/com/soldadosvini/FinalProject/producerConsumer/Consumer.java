@@ -14,11 +14,18 @@ public class Consumer extends Thread {
     @Override
     public void run() {
         System.out.println("Running Consumer...");
-        char product;
+        String product;
         
-        for(int i=0 ; i<5 ; i++) {
-            product = this.buffer.consume();
-            Buffer.print("Consumer consumed: " + product);
+
+        while(this.buffer.threIsSpace()){
+            System.out.println("Consumer attempting");
+            product = this.buffer.consume(); // get the operacion: (+ 4 3)
+            System.out.println("Consumer task to solve:" + product);
+            String result = Utils.resolveTask(product);
+            // call scheme interpreter
+            // get result
+
+            Buffer.processFinished("Consumer result: " + result); // let the buffer know
             
             try {
                 Thread.sleep(1000);

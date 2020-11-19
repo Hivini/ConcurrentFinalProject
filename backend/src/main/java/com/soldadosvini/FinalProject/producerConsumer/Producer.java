@@ -7,22 +7,29 @@ import java.util.logging.Logger;
 
 public class Producer extends Thread {
     Buffer buffer;
+    Character[] operators;
+    int min, max;
     
-    public Producer(Buffer buffer) {
+    // Contructor parametrizado : Rango de numeros y posibles operadores
+    public Producer(Buffer buffer, Character[] operators, int max, int min ) {
         this.buffer = buffer;
+        this.operators = operators;
+        this.max = max;
+        this.min = min;
     }
     
     @Override
     public void run() {
         System.out.println("Running Producer...");
-        String products = "AEIOU";
         Random r = new Random(System.currentTimeMillis());
-        char product;
-        
-        for(int i=0 ; i<5 ; i++) {
-            product = products.charAt(r.nextInt(5));
-            this.buffer.produce(product);
-            Buffer.print("Producer produced: " + product);
+        int auxIndexOperator = r.ints(0, this.operators.length).findFirst().getAsInt();
+        String operation = "";
+
+
+        while(this.buffer.threIsSpace()) {
+            operation = Utils.generateTask(this.min, this.max, this.operators[auxIndexOperator]);
+            this.buffer.produce(operation);
+            System.out.println("Producer produced: " + operation);
             
             try {
                 Thread.sleep(1000);
