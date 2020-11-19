@@ -1,18 +1,19 @@
 
 package com.soldadosvini.FinalProject.producerConsumer;
 
+import java.util.Observable;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Buffer {
+public class Buffer extends Observable {
     
     static private int finishedProcess = 0;
     static private int producedProcess = 0;
     private final Queue<String> buffer;
     private int maxSize;
-    
+
     // Constructor parametrizado: size
 
     public Buffer(int bufferSize) {
@@ -52,10 +53,12 @@ public class Buffer {
     }
     
 
-    synchronized static void processFinished(String string) {
+    synchronized void processFinished(String string) {
         finishedProcess++;
         System.out.print(finishedProcess + " ");
         System.out.println(string);
+        this.setChanged();
+        this.notifyObservers(string);
     }
 
 
