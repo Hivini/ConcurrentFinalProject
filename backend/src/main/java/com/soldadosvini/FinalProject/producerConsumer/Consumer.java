@@ -6,9 +6,11 @@ import java.util.logging.Logger;
 
 public class Consumer extends Thread {
     Buffer buffer;
+    int waitTime;
     
-    public Consumer(Buffer buffer) {
+    public Consumer(Buffer buffer, int waitTime) {
         this.buffer = buffer;
+        this.waitTime = waitTime;
     }
     
     @Override
@@ -26,12 +28,12 @@ public class Consumer extends Thread {
             Buffer.processFinished("Consumer result: " + result); // let the buffer know
             
             try {
-                Thread.sleep(1000);
+                Thread.sleep(this.waitTime);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    
+
 }

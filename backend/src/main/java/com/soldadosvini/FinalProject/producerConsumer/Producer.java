@@ -8,14 +8,16 @@ import java.util.logging.Logger;
 public class Producer extends Thread {
     Buffer buffer;
     Character[] operators;
-    int min, max;
+    int min, max, waitTime;
+
     
     // Contructor parametrizado : Rango de numeros y posibles operadores
-    public Producer(Buffer buffer, Character[] operators, int max, int min ) {
+    public Producer(Buffer buffer, Character[] operators, int max, int min, int waitTime ) {
         this.buffer = buffer;
         this.operators = operators;
         this.max = max;
         this.min = min;
+        this.waitTime = waitTime;
     }
     
     @Override
@@ -32,7 +34,7 @@ public class Producer extends Thread {
             System.out.println("Producer produced: " + operation);
             
             try {
-                Thread.sleep(1000);
+                Thread.sleep(this.waitTime);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
             }
