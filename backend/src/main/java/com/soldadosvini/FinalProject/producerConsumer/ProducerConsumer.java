@@ -16,20 +16,21 @@ public class ProducerConsumer {
 
     private ArrayList<Consumer> consumers;
     private ArrayList<Producer> producers;
-    private Buffer buffer;
+    public Buffer buffer;
     private Character[] operators;
     private int minRange;
     private int maxRange;
+    private int waitTime;
 
 
 
-    public ProducerConsumer(int consumers, int producers, int bufferSize, Character[] operators, int minRange, int maxRange) {
+    public ProducerConsumer(int consumers, int producers, int bufferSize, Character[] operators, int minRange, int maxRange, int waitTime) {
         this.buffer = new Buffer(bufferSize);
 
         this.operators = operators;
         this.maxRange = maxRange;
         this.minRange = minRange;
-        
+        this.waitTime = waitTime;
        
         this.producers = new ArrayList<>();
         initProducers(producers);
@@ -42,13 +43,13 @@ public class ProducerConsumer {
 
     public void initConsumers(int size) {
         for (int i = 0; i < size; i++) {
-            this.consumers.add(new Consumer(this.buffer));
+            this.consumers.add(new Consumer(this.buffer, this.waitTime));
         }
     }
 
     public void initProducers(int size) {
         for (int i = 0; i < size; i++) {
-            this.producers.add(new Producer(this.buffer, this.operators, this.maxRange, this.minRange));
+            this.producers.add(new Producer(this.buffer, this.operators, this.maxRange, this.minRange, this.waitTime));
         }
     }
 
