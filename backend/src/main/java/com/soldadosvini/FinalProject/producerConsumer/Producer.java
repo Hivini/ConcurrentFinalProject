@@ -26,7 +26,7 @@ public class Producer extends Thread {
         String operation = "";
 
 
-        while(this.buffer.threIsSpace()) {
+        while(this.buffer.thereIsSpace()) {
             operation = Utils.generateTask(this.min, this.max, this.operators[auxIndexOperator]);
             this.buffer.produce(operation);
             System.out.println("Producer produced: " + operation);

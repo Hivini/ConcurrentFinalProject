@@ -33,7 +33,7 @@ public class ProducerConsumer {
        
         this.producers = new ArrayList<>();
         initProducers(producers);
-        
+
         this.consumers = new ArrayList<>();
         initConsumers(consumers);
         
@@ -64,7 +64,4 @@ public class ProducerConsumer {
     }
 
 
-    public void showConsumerStatus() {
-        //return this.buffer.getSatus();
-    }
 }

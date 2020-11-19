@@ -17,10 +17,8 @@ public class Consumer extends Thread {
         String product;
         
 
-        while(this.buffer.threIsSpace()){
-            System.out.println("Consumer attempting");
+        while(this.buffer.thereIsSpace()){
             product = this.buffer.consume(); // get the operacion: (+ 4 3)
-            System.out.println("Consumer task to solve:" + product);
             String result = Utils.resolveTask(product);
             // call scheme interpreter
             // get result
@@ -34,4 +32,6 @@ public class Consumer extends Thread {
             }
         }
     }
+
+    
 }

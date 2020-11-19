@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 public class Buffer {
     
     static private int finishedProcess = 0;
+    static private int producedProcess = 0;
     private final Queue<String> buffer;
     private int maxSize;
     
@@ -22,7 +23,7 @@ public class Buffer {
     synchronized String consume() {
         String product;
         
-        if(this.buffer.isEmpty()) {
+        while(this.buffer.isEmpty()) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -37,13 +38,14 @@ public class Buffer {
     }
     
     synchronized void produce(String product) {
-        if(this.buffer.size() >= maxSize) {
+        while(producedProcess >= maxSize) {
             try {
                 wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        producedProcess++;
         this.buffer.add(product);
         
         notify();
@@ -57,16 +59,11 @@ public class Buffer {
     }
 
 
-    public int currentStatus() {
-        return 0;
-    }
-
-
-    public boolean isEmpty() {
+    synchronized public boolean isEmpty() {
         return this.buffer.isEmpty();
     }
 
-    public boolean threIsSpace() {
+    synchronized public boolean thereIsSpace() {
         return finishedProcess < this.maxSize;
     }
 }
