@@ -25,7 +25,7 @@ public class Consumer extends Thread {
             // call scheme interpreter
             // get result
 
-            Buffer.processFinished("Consumer result: " + result); // let the buffer know
+            this.buffer.processFinished("Consumer result: " + result); // let the buffer know
             
             try {
                 Thread.sleep(this.waitTime);
