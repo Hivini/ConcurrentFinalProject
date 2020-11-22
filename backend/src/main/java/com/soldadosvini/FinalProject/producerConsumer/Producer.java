@@ -10,29 +10,30 @@ public class Producer extends Thread {
     Character[] operators;
     int min, max, waitTime;
 
-    
     // Contructor parametrizado : Rango de numeros y posibles operadores
-    public Producer(Buffer buffer, Character[] operators, int max, int min, int waitTime ) {
+    public Producer(Buffer buffer, Character[] operators, int max, int min, int waitTime) {
         this.buffer = buffer;
         this.operators = operators;
         this.max = max;
         this.min = min;
         this.waitTime = waitTime;
     }
-    
+
     @Override
     public void run() {
         System.out.println("Running Producer...");
         Random r = new Random(System.currentTimeMillis());
         int auxIndexOperator = r.ints(0, this.operators.length).findFirst().getAsInt();
-        String operation = "";
+        String operationStr = "";
 
+        while (this.buffer.thereIsSpace()) {
+            operationStr = Utils.generateTask(this.min, this.max, this.operators[auxIndexOperator]);
+            Operation auxOperation = new Operation(operationStr);
 
-        while(this.buffer.thereIsSpace()) {
-            operation = Utils.generateTask(this.min, this.max, this.operators[auxIndexOperator]);
-            this.buffer.produce(operation);
-            System.out.println("Producer produced: " + operation);
-            
+            this.buffer.produce(auxOperation);
+
+            System.out.println("Producer produced: " + auxOperation.toString());
+
             try {
                 Thread.sleep(this.waitTime);
             } catch (InterruptedException ex) {
@@ -40,5 +41,5 @@ public class Producer extends Thread {
             }
         }
     }
-    
+
 }
