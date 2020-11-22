@@ -2,7 +2,7 @@ package com.soldadosvini.FinalProject.producerConsumer;
 
 import java.util.UUID;
 
-public class Operation {
+public class Operation implements Comparable<Operation> {
 
     private String ID;
     private String operation;
@@ -49,6 +49,12 @@ public class Operation {
 
     @Override
     public String toString() {
-        return String.format("{id:%s, operation:%s, result=%s}", this.ID, this.operation, this.result);
+        return String.format("{id: %s, operation: %s, result: %s}", this.ID, this.operation, this.result);
     }
+
+    @Override
+    public int compareTo(Operation o) {
+        return 0;
+    }
+
 }
