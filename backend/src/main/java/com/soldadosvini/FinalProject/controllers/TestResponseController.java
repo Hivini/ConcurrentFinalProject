@@ -12,7 +12,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
-
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.StringTokenizer;
@@ -24,6 +23,8 @@ public class TestResponseController {
     public SimpMessageSendingOperations messagingTemplate;
 
     Logger logger = LoggerFactory.getLogger(TestResponseController.class);
+
+    ProducerConsumer pc;
 
     /*
      * @MessageMapping("/hello")
@@ -41,13 +42,13 @@ public class TestResponseController {
      * "!"); }
      */
 
+    // Endpoint for initialize and start Producer-Consumer processes
     @MessageMapping("/hello")
     @SendTo("/backend/init")
     public TestResponse init(TestMessage message) throws Exception {
         // Format: "Cons, Prods, Buffer Size, minRange, maxRange, wait time, Operator1,
         // Operator2... Operatorn"
         // Format: "2,2,10,1,9,500,+,-,/,*"
-
         String parametersStr = HtmlUtils.htmlEscape(message.getName());
 
         StringTokenizer auxTokenizer = new StringTokenizer(parametersStr, ",");
@@ -68,13 +69,31 @@ public class TestResponseController {
         Character[] operatorsArray = new Character[operatorsArrayList.size()];
         operatorsArrayList.toArray(operatorsArray);
 
-        ProducerConsumer pc = new ProducerConsumer(nConsumers, nProducers, bufferSize, operatorsArray, minRange,
-                maxRange, waitRime);
+        System.out.println(operatorsArrayList.toString());
+
+        pc = new ProducerConsumer(nConsumers, nProducers, bufferSize, operatorsArray, minRange, maxRange, waitRime);
 
         pc.start();
+        Observer myObserver = new Observer();
+        pc.buffer.addObserver(myObserver);
 
         return new TestResponse("Producer Consumer Started correctly");
+    }
 
+    @SendTo("/backend/solvedTask")
+    public TestResponse solvedTask(TestMessage message) throws Exception {
+        return new TestResponse(pc.buffer.solvedTask());
+    }
+
+    @SendTo("/backend/toSolve")
+    public TestResponse toSolve(TestMessage message) throws Exception {
+        return new TestResponse(pc.buffer.toSolve());
+    }
+
+    @SendTo("/backend/taskLeft")
+    public TestResponse nTaskToSolve(TestMessage message) throws Exception {
+        String response = "" + pc.buffer.taskLeft();
+        return new TestResponse(response);
     }
 
     class Observer implements java.util.Observer {
@@ -83,7 +102,7 @@ public class TestResponseController {
         public void update(Observable o, Object arg) {
             System.out.println("From obs: ");
             System.out.println(arg);
-            messagingTemplate.convertAndSend("/topic/greetings", arg.toString());
+            messagingTemplate.convertAndSend("/backend/init", arg.toString());
         }
     }
 }
