@@ -1,53 +1,99 @@
 
 package com.soldadosvini.FinalProject.producerConsumer;
 
+import java.util.Observable;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Buffer {
-    
-    private final Queue<Character> buffer;
+public class Buffer extends Observable {
+
+    private int finishedProcess = 0;
+    private int producedProcess = 0;
+    private final Queue<Operation> buffer;
+    private final Queue<Operation> resolvedBuffer;
     private int maxSize;
-    
+
+    // Constructor parametrizado: size
+
     public Buffer(int bufferSize) {
         buffer = new PriorityQueue<>(bufferSize);
-        maxSize = bufferSize;
+        resolvedBuffer = new PriorityQueue<>(bufferSize);
+        this.maxSize = bufferSize;
+        this.finishedProcess = 0;
+        this.producedProcess = 0;
     }
-    
-    synchronized char consume() {
-        char product = 0;
-        
-        if(this.buffer.isEmpty()) {
+
+    synchronized Operation consume() {
+        Operation product;
+
+        while (this.buffer.isEmpty()) {
             try {
                 wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
         product = this.buffer.remove();
         notify();
-        
         return product;
     }
-    
-    synchronized void produce(char product) {
-        if(this.buffer.size() >= maxSize) {
+
+    synchronized void produce(Operation product) {
+        while (producedProcess >= maxSize) {
             try {
                 wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        this.producedProcess++;
         this.buffer.add(product);
-        
+
         notify();
     }
-    
-    static int count = 1;
-    synchronized static void print(String string) {
-        System.out.print(count++ + " ");
-        System.out.println(string);
+
+    synchronized public boolean isEmpty() {
+        return this.buffer.isEmpty();
+    }
+
+    synchronized public boolean thereIsSpace() {
+        return this.finishedProcess < this.maxSize;
+    }
+
+    synchronized public void addToResolved(Operation aux) {
+        this.finishedProcess++;
+        this.resolvedBuffer.add(aux);
+        this.setChanged();
+        this.notifyObservers(aux.toString());
+        System.out.print(finishedProcess + " " + aux.toString());
+    }
+
+    public int taskLeft() {
+        return this.producedProcess - this.finishedProcess;
+    }
+
+    public String solvedTask() {
+
+        String result = "{ ";
+
+        for (Operation auxOp : this.resolvedBuffer) {
+            result += auxOp.toString() + ",";
+        }
+
+        return result + "}";
+    }
+
+    public String toSolve() {
+
+        String result = "{ ";
+
+        for (Operation auxOp : this.buffer) {
+            result += auxOp.toString() + ",";
+        }
+
+        return result + "}";
     }
 }

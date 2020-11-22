@@ -9,7 +9,7 @@ import * as SockJS from 'sockjs-client';
 })
 export class SocketService {
   stompClient: any;
-  topic: string = '/topic/greetings';
+  topic: string = '/backend/init';
   public messagesSubject : Subject<any> =  new Subject()
 
   public connect(){

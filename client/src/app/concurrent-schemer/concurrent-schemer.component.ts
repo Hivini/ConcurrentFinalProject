@@ -31,6 +31,6 @@ export class ConcurrentSchemerComponent implements OnInit {
   }
 
   start(){
-    this.socketService.send("Hello!")
+    this.socketService.send("2,2,10,1,9,500,+,-,/,*") // example of parameters
   }
 }
