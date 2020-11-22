@@ -42,7 +42,7 @@ public class TestResponseController {
      */
 
     @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @SendTo("/backend/init")
     public TestResponse init(TestMessage message) throws Exception {
         // Format: "Cons, Prods, Buffer Size, minRange, maxRange, wait time, Operator1,
         // Operator2... Operatorn"
