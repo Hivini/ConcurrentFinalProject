@@ -7,26 +7,26 @@ import java.util.logging.Logger;
 public class Consumer extends Thread {
     Buffer buffer;
     int waitTime;
-    
+
     public Consumer(Buffer buffer, int waitTime) {
         this.buffer = buffer;
         this.waitTime = waitTime;
     }
-    
+
     @Override
     public void run() {
         System.out.println("Running Consumer...");
-        String product;
-        
+        Operation product;
 
-        while(this.buffer.thereIsSpace()){
+        while (this.buffer.thereIsSpace()) {
             product = this.buffer.consume(); // get the operacion: (+ 4 3)
-            String result = Utils.resolveTask(product);
+            String result = Utils.resolveTask(product.getOperation());
             // call scheme interpreter
             // get result
 
-            this.buffer.processFinished("Consumer result: " + result); // let the buffer know
-            
+            product.setResult(result);
+            this.buffer.addToResolved(product);
+
             try {
                 Thread.sleep(this.waitTime);
             } catch (InterruptedException ex) {
@@ -34,6 +34,5 @@ public class Consumer extends Thread {
             }
         }
     }
-
 
 }
