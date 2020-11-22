@@ -63,7 +63,7 @@ public class Buffer extends Observable {
 
     synchronized public void addToResolved(Operation aux) {
         finishedProcess++;
-        System.out.print(finishedProcess + " " + aux.toString();
+        System.out.print(finishedProcess + " " + aux.toString());
         this.resolvedBuffer.add(aux);
         this.setChanged();
         this.notifyObservers(aux.toString());

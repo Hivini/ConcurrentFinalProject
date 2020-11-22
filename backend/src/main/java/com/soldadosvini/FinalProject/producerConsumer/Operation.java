@@ -6,6 +6,21 @@ public class Operation {
     private String operation;
     private String result;
 
+    public Operation() {
+
+    }
+
+    public Operation(String id, String operation) {
+        this.ID = id;
+        this.operation = operation;
+    }
+
+    public Operation(String id, String operation, String result) {
+        this.ID = id;
+        this.operation = operation;
+        this.result = result;
+    }
+
     public String getID() {
         return ID;
     }
