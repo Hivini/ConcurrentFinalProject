@@ -1,5 +1,7 @@
 package com.soldadosvini.FinalProject.producerConsumer;
 
+import java.util.UUID;
+
 public class Operation {
 
     private String ID;
@@ -10,13 +12,13 @@ public class Operation {
 
     }
 
-    public Operation(String id, String operation) {
-        this.ID = id;
+    public Operation(String operation) {
+        this.ID = UUID.randomUUID().toString();
         this.operation = operation;
     }
 
-    public Operation(String id, String operation, String result) {
-        this.ID = id;
+    public Operation(String operation, String result) {
+        this.ID = UUID.randomUUID().toString();
         this.operation = operation;
         this.result = result;
     }
