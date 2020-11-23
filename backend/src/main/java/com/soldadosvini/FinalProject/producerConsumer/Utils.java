@@ -11,7 +11,8 @@ public class Utils {
         Scheme scheme = new Scheme();
         try{
             Object result = scheme.eval(task);
-            return String.format("%.2f", result);
+            System.out.println(result);
+            return result.toString();
         }catch (Throwable throwable) {
             System.out.println(throwable);
         }
