@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 public class Consumer extends Thread {
     Buffer buffer;
     int waitTime;
+    public boolean stop = false;
 
     public Consumer(Buffer buffer, int waitTime) {
         this.buffer = buffer;
@@ -18,7 +19,7 @@ public class Consumer extends Thread {
         System.out.println("Running Consumer...");
         Operation product;
 
-        while (this.buffer.thereIsSpace()) {
+        while (this.buffer.thereIsSpace() && !stop) {
             product = this.buffer.consume(); // get the operacion: (+ 4 3)
             String result = Utils.resolveTask(product.getOperation());
             // call scheme interpreter

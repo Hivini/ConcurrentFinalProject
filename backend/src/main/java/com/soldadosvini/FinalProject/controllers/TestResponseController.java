@@ -1,5 +1,7 @@
 package com.soldadosvini.FinalProject.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soldadosvini.FinalProject.messages.TestMessage;
 import com.soldadosvini.FinalProject.messages.TestResponse;
 
@@ -45,7 +47,7 @@ public class TestResponseController {
     // Endpoint for initialize and start Producer-Consumer processes
     @MessageMapping("/hello")
     @SendTo("/backend/init")
-    public TestResponse init(TestMessage message) throws Exception {
+    public void init(TestMessage message) throws Exception {
         // Format: "Cons, Prods, Buffer Size, minRange, maxRange, wait time, Operator1,
         // Operator2... Operatorn"
         // Format: "2,2,10,1,9,500,+,-,/,*"
@@ -56,9 +58,7 @@ public class TestResponseController {
         int nProducers = Integer.parseInt(auxTokenizer.nextToken());
         int bufferSize = Integer.parseInt(auxTokenizer.nextToken());
         int minRange = Integer.parseInt(auxTokenizer.nextToken());
-        ;
         int maxRange = Integer.parseInt(auxTokenizer.nextToken());
-        ;
         int waitRime = Integer.parseInt(auxTokenizer.nextToken());
         ArrayList<Character> operatorsArrayList = new ArrayList<>();
 
@@ -69,15 +69,20 @@ public class TestResponseController {
         Character[] operatorsArray = new Character[operatorsArrayList.size()];
         operatorsArrayList.toArray(operatorsArray);
 
-        System.out.println(operatorsArrayList.toString());
-
         pc = new ProducerConsumer(nConsumers, nProducers, bufferSize, operatorsArray, minRange, maxRange, waitRime);
-
-        pc.start();
         Observer myObserver = new Observer();
         pc.buffer.addObserver(myObserver);
 
-        return new TestResponse("Producer Consumer Started correctly");
+        pc.start();
+    }
+
+    @MessageMapping("/stop")
+    @SendTo("/backend/stop")
+    public String stop(){
+        System.out.println("stopping!!!");
+        this.pc.stop();
+
+        return "All threads stopped";
     }
 
     @SendTo("/backend/solvedTask")
@@ -97,12 +102,17 @@ public class TestResponseController {
     }
 
     class Observer implements java.util.Observer {
+        ObjectMapper mapper = new ObjectMapper();
 
         @Override
         public void update(Observable o, Object arg) {
-            System.out.println("From obs: ");
-            System.out.println(arg);
-            messagingTemplate.convertAndSend("/backend/init", arg.toString());
+
+            try {
+                String JSONobject =  mapper.writeValueAsString(arg);
+                messagingTemplate.convertAndSend("/backend/init",JSONobject);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

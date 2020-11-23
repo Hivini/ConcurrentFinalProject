@@ -16,6 +16,8 @@ import { ConcurrentSchemerComponent } from './concurrent-schemer/concurrent-sche
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 registerLocaleData(en);
 
@@ -35,7 +37,9 @@ registerLocaleData(en);
     NzCheckboxModule,
     NzButtonModule,
     NzInputNumberModule,
-    FormsModule
+    FormsModule,
+    NzTableModule,
+    NzProgressModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
