@@ -1,5 +1,7 @@
 # ConcurrentFinalProject
 
+This is an implementation of a producer-consumer multithreading application. We used spring boot, angular, ng-zorro and Sock.js
+
 ## How to run backend
 ```bash
 cd backend/
@@ -14,9 +16,6 @@ cd client/
 npm i
 ng serve
 ```
-
-## How to test example socket
-Run the backend and open the file ./testClient/index.html on the local browser to test it.
 
 ## Integrantes
 * Jorge Vinicio Quintero Santos.
