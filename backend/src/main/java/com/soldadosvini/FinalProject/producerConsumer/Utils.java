@@ -10,13 +10,11 @@ public class Utils {
     public static String resolveTask(String task) {
         Scheme scheme = new Scheme();
         try{
-            Object result = scheme.eval(task);
-            System.out.println(result);
+            Object result = scheme.eval("(exact->inexact "+ task +")");
             return result.toString();
         }catch (Throwable throwable) {
-            System.out.println(throwable);
+            return "Non existent";
         }
-        return "";
     }
 
     /**
