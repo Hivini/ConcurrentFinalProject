@@ -37,7 +37,8 @@ public class Buffer extends Observable {
         }
 
         product = this.buffer.remove();
-        notify();
+
+        notifyAll();
         return product;
     }
 
@@ -51,8 +52,9 @@ public class Buffer extends Observable {
         }
         this.producedProcess++;
         this.buffer.add(product);
-
-        notify();
+        this.setChanged();
+        this.notifyObservers(product);
+        notifyAll();
     }
 
     synchronized public boolean isEmpty() {
@@ -67,8 +69,7 @@ public class Buffer extends Observable {
         this.finishedProcess++;
         this.resolvedBuffer.add(aux);
         this.setChanged();
-        this.notifyObservers(aux.toString());
-        System.out.print(finishedProcess + " " + aux.toString());
+        this.notifyObservers(aux);
     }
 
     public int taskLeft() {
