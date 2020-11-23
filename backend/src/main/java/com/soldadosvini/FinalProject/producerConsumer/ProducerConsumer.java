@@ -52,4 +52,14 @@ public class ProducerConsumer {
         }
     }
 
+    public void stop(){
+        for(Producer auxProducer : this.producers){
+            auxProducer.stop = true;
+        }
+
+        for (Consumer auxConsumer : this.consumers) {
+            auxConsumer.stop = true;
+        }
+    }
+
 }
