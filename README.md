@@ -1,6 +1,6 @@
 # ConcurrentFinalProject
 
-This is an implementation of a producer-consumer multithreading application. We used spring boot, angular, ng-zorro and Sock.js
+This is an implementation of a producer-consumer multithreading application with the objective of generating random scheme operations and solving them. We used spring boot, angular, ng-zorro, kawa and Sock.js
 
 ## How to run backend
 ```bash
