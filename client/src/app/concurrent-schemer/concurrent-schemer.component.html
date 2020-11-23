@@ -23,6 +23,15 @@
           <nz-input-number [nzMin]="1" [nzMax]="10"  [(ngModel)]="consNum" class="left-input"></nz-input-number>
         </nz-col>
         <nz-col nzSpan="24">
+          <p>Buffer size</p>
+        </nz-col>
+        <nz-col nzSpan="20">
+          <nz-slider [nzMin]="1" [nzMax]="100" [(ngModel)]="bufSize"></nz-slider>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-input-number [nzMin]="1" [nzMax]="100"  [(ngModel)]="bufSize" class="left-input"></nz-input-number>
+        </nz-col>
+        <nz-col nzSpan="24">
           <p>Wait time</p>
         </nz-col>
         <nz-col nzSpan="20">
@@ -52,10 +61,47 @@
         <nz-col nzSpan="24">
           <button nz-button nzType="primary" class="start-button" (click)="start()">Start</button>
         </nz-col>
+        <nz-col nzSpan="24">
+          <button nz-button nzType="primary" class="start-button" (click)="stop()" [disabled]="!canStop">Stop</button>
+        </nz-col>
       </nz-row>
     </nz-col>
     <nz-col class="card"  nzXs="23" nzLg="11">
       <h2 class="subtitle">Consumer</h2>
+
+      <nz-progress [nzPercent]="getProgress()" class="progress-bar" #progressBar></nz-progress>
+
+
+      <nz-row style="margin-top: 16px;">
+        <nz-table [nzSimple]="true" [nzTemplateMode]="true" [nzScroll]="{ y: '480px' }">
+          <thead>
+            <tr>
+              <th>
+                ID
+              </th>
+              <th>
+                Operation
+              </th>
+              <th>
+                Result
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let operation of operations | keyvalue">
+              <td>
+                {{operation.key}}
+              </td>
+              <td>
+                {{operation.value.operation}}
+              </td>
+              <td>
+                {{operation.value.result}}
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-row>
     </nz-col>
   </nz-row>
 </div>
