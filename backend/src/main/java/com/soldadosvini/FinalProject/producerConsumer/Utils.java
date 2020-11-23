@@ -1,39 +1,21 @@
 package com.soldadosvini.FinalProject.producerConsumer;
 
+import kawa.standard.Scheme;
+
 import java.util.Random;
 
 public class Utils {
 
-    /* TODO(hivini): Call Scheme program instead. */
+    // Uses Kawa to evaluate a Scheme function
     public static String resolveTask(String task) {
-        // Get all elements that are separated by a whitespace.
-        String[] elements = task.split("\\s+");
-
-        char operation = elements[1].charAt(0);
-        int current = 3;
-        float result = Float.parseFloat(elements[2]);
-        while (current < elements.length) {
-            if (elements[current].equals(")"))
-                break;
-            switch (operation) {
-                case '+':
-                    result += Float.parseFloat(elements[current++]);
-                    break;
-                case '-':
-                    result -= Float.parseFloat(elements[current++]);
-                    break;
-                case '/':
-                    // TODO(hivini): Zero not handled yet.
-                    result /= Float.parseFloat(elements[current++]);
-                    break;
-                case '*':
-                    result *= Float.parseFloat(elements[current++]);
-                    break;
-                default:
-                    // Fall through
-            }
+        Scheme scheme = new Scheme();
+        try{
+            Object result = scheme.eval(task);
+            return String.format("%.2f", result);
+        }catch (Throwable throwable) {
+            System.out.println(throwable);
         }
-        return String.format("%.2f", result);
+        return "";
     }
 
     /**
