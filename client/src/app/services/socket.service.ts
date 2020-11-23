@@ -10,7 +10,9 @@ import * as SockJS from 'sockjs-client';
 export class SocketService {
   stompClient: any;
   topic: string = '/backend/init';
-  public messagesSubject : Subject<any> =  new Subject()
+  public operationSubject: Subject<any> = new Subject()
+  public resultsSubject: Subject<any> =  new Subject()
+  public stopSubject: Subject<any> = new Subject()
 
   public connect(){
     console.log('%c Initializing socket connection.','color: #22a322');
@@ -19,7 +21,13 @@ export class SocketService {
     const _this = this;
     _this.stompClient.connect({}, (frame)=>{
       _this.stompClient.subscribe(_this.topic, (event)=>{
-        this.messagesSubject.next(event);
+        this.resultsSubject.next(event);
+      })
+      _this.stompClient.subscribe("/backend/stop", (event)=>{
+        this.stopSubject.next(event)
+      })
+      _this.stompClient.subscribe("/backend/toSolve", (event)=>{
+        this.operationSubject.next(event)
       })
     }, _this.errorCallback)
   }
@@ -39,8 +47,11 @@ export class SocketService {
   }
 
   public send(message){
-    console.log("calling logout api via web socket");
     this.stompClient.send("/app/hello", {}, JSON.stringify(message));
+  }
+
+  public stop(){
+    this.stompClient.send("/app/stop", {})
   }
 
 }
